@@ -4,6 +4,8 @@
 
 // WhatsApp de Montecan (formato internacional, sin + ni espacios)
 const WHATSAPP = "525559028396";
+// API key de CallMeBot para avisos automáticos (vacía = abrir WhatsApp del cliente)
+const CALLMEBOT_KEY = "";
 
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -13,16 +15,47 @@ const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 $("#year").textContent = new Date().getFullYear();
 
 /* ---------- Formulario → WhatsApp ---------- */
-$("#reserva-form").addEventListener("submit", (e) => {
+$("#reserva-form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const f = new FormData(e.target);
-  const msg =
-    `¡Hola Montecan! 🐾\n` +
-    `Soy ${f.get("nombre")}.\n` +
-    `Mi perro: ${f.get("perro")}\n` +
-    `Me interesa: ${f.get("servicio")}` +
-    (f.get("mensaje") ? `\n\n${f.get("mensaje")}` : "");
-  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+  const form = e.target;
+  const f = new FormData(form);
+
+  if (!CALLMEBOT_KEY) {
+    const msg =
+      `¡Hola Montecan! 🐾\n` +
+      `Soy ${f.get("nombre")}.\n` +
+      `Mi perro: ${f.get("perro")}\n` +
+      `Me interesa: ${f.get("servicio")}` +
+      (f.get("mensaje") ? `\n\n${f.get("mensaje")}` : "");
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+    return;
+  }
+
+  const aviso =
+    `🐾 Nueva reserva Montecan\n` +
+    `Nombre: ${f.get("nombre")}\n` +
+    `Perro: ${f.get("perro")}\n` +
+    `Servicio: ${f.get("servicio")}` +
+    (f.get("mensaje") ? `\nNotas: ${f.get("mensaje")}` : "");
+  const btn = $("button[type=submit] span", form);
+  const original = btn.textContent;
+  form.querySelector("button").disabled = true;
+  btn.textContent = "Enviando…";
+  try {
+    // CallMeBot no manda cabeceras CORS: la petición sale igual, solo no podemos leer la respuesta
+    await fetch(
+      `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP}&apikey=${CALLMEBOT_KEY}&text=${encodeURIComponent(aviso)}`,
+      { mode: "no-cors" }
+    );
+    form.reset();
+    btn.textContent = "¡Listo! Te contactamos pronto 🐾";
+  } catch {
+    btn.textContent = "No se pudo enviar, escríbenos por WhatsApp";
+  }
+  setTimeout(() => {
+    btn.textContent = original;
+    form.querySelector("button").disabled = false;
+  }, 5000);
 });
 
 /* ---------- Menú móvil ---------- */
