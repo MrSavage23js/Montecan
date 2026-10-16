@@ -294,6 +294,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .promise__item p { margin-top: 14px; color: rgba(58, 44, 35, .75); max-width: 24ch; }
 
 /* ---------- Galería ---------- */
+.ig-link { color: var(--wine); font-weight: 600; border-bottom: 1px solid currentColor; }
+.ig-link:hover { color: var(--cocoa); }
 .gallery { padding: clamp(100px, 14vw, 180px) 0; overflow: hidden; }
 .gallery__grid {
   display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(12px, 1.6vw, 24px);
