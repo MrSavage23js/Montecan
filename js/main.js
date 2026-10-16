@@ -2,8 +2,8 @@
    MONTECAN · Hike & Hound — interacciones y animaciones
    ========================================================= */
 
-// ⚠️ Cambia este número por el WhatsApp real de Montecan (formato internacional, sin + ni espacios)
-const WHATSAPP = "520000000000";
+// WhatsApp de Montecan (formato internacional, sin + ni espacios)
+const WHATSAPP = "525559028396";
 
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
