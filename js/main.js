@@ -21,6 +21,7 @@ $("#reserva-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.target;
   const f = new FormData(form);
+  const tels = [f.get("telefono"), f.get("telefono2")].filter(Boolean).join(" / ");
 
   // Sin avisos automáticos configurados: abrir WhatsApp del cliente con el mensaje armado
   if (!CALLMEBOT_KEY && !RESERVAS_EMAIL) {
@@ -28,6 +29,8 @@ $("#reserva-form").addEventListener("submit", async (e) => {
       `¡Hola Montecan! 🐾
 ` +
       `Soy ${f.get("nombre")}.
+` +
+      `Tel: ${tels}
 ` +
       `Mi perro: ${f.get("perro")}
 ` +
@@ -43,6 +46,8 @@ ${f.get("mensaje")}` : "");
     `🐾 Nueva reserva Montecan
 ` +
     `Nombre: ${f.get("nombre")}
+` +
+    `Tel: ${tels}
 ` +
     `Perro: ${f.get("perro")}
 ` +
@@ -66,6 +71,8 @@ Notas: ${f.get("mensaje")}` : "");
           _template: "table",
           _captcha: "false",
           Nombre: f.get("nombre"),
+          Teléfono: f.get("telefono"),
+          "Otro teléfono": f.get("telefono2") || "—",
           Perro: f.get("perro"),
           Servicio: f.get("servicio"),
           Notas: f.get("mensaje") || "—",
