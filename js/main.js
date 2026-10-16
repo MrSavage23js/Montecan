@@ -4,8 +4,10 @@
 
 // WhatsApp de Montecan (formato internacional, sin + ni espacios)
 const WHATSAPP = "525559028396";
-// API key de CallMeBot para avisos automáticos (vacía = abrir WhatsApp del cliente)
+// API key de CallMeBot para avisos automáticos por WhatsApp (vacía = desactivado)
 const CALLMEBOT_KEY = "";
+// Correo que recibe las reservas vía FormSubmit (vacío = desactivado)
+const RESERVAS_EMAIL = "montecanhh@gmail.com";
 
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -14,47 +16,85 @@ const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 $("#year").textContent = new Date().getFullYear();
 
-/* ---------- Formulario → WhatsApp ---------- */
+/* ---------- Formulario de reserva ---------- */
 $("#reserva-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.target;
   const f = new FormData(form);
 
-  if (!CALLMEBOT_KEY) {
+  // Sin avisos automáticos configurados: abrir WhatsApp del cliente con el mensaje armado
+  if (!CALLMEBOT_KEY && !RESERVAS_EMAIL) {
     const msg =
-      `¡Hola Montecan! 🐾\n` +
-      `Soy ${f.get("nombre")}.\n` +
-      `Mi perro: ${f.get("perro")}\n` +
+      `¡Hola Montecan! 🐾
+` +
+      `Soy ${f.get("nombre")}.
+` +
+      `Mi perro: ${f.get("perro")}
+` +
       `Me interesa: ${f.get("servicio")}` +
-      (f.get("mensaje") ? `\n\n${f.get("mensaje")}` : "");
+      (f.get("mensaje") ? `
+
+${f.get("mensaje")}` : "");
     window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
     return;
   }
 
   const aviso =
-    `🐾 Nueva reserva Montecan\n` +
-    `Nombre: ${f.get("nombre")}\n` +
-    `Perro: ${f.get("perro")}\n` +
+    `🐾 Nueva reserva Montecan
+` +
+    `Nombre: ${f.get("nombre")}
+` +
+    `Perro: ${f.get("perro")}
+` +
     `Servicio: ${f.get("servicio")}` +
-    (f.get("mensaje") ? `\nNotas: ${f.get("mensaje")}` : "");
-  const btn = $("button[type=submit] span", form);
+    (f.get("mensaje") ? `
+Notas: ${f.get("mensaje")}` : "");
+  const button = $("button[type=submit]", form);
+  const btn = $("span", button);
   const original = btn.textContent;
-  form.querySelector("button").disabled = true;
+  button.disabled = true;
   btn.textContent = "Enviando…";
-  try {
-    // CallMeBot no manda cabeceras CORS: la petición sale igual, solo no podemos leer la respuesta
-    await fetch(
-      `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP}&apikey=${CALLMEBOT_KEY}&text=${encodeURIComponent(aviso)}`,
-      { mode: "no-cors" }
+
+  const envios = [];
+  if (RESERVAS_EMAIL) {
+    envios.push(
+      fetch(`https://formsubmit.co/ajax/${RESERVAS_EMAIL}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: `Nueva reserva: ${f.get("nombre")} · ${f.get("servicio")}`,
+          _template: "table",
+          _captcha: "false",
+          Nombre: f.get("nombre"),
+          Perro: f.get("perro"),
+          Servicio: f.get("servicio"),
+          Notas: f.get("mensaje") || "—",
+        }),
+      }).then((r) => {
+        if (!r.ok) throw new Error(r.status);
+      })
     );
+  }
+  if (CALLMEBOT_KEY) {
+    // CallMeBot no manda cabeceras CORS: la petición sale igual, solo no podemos leer la respuesta
+    envios.push(
+      fetch(
+        `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP}&apikey=${CALLMEBOT_KEY}&text=${encodeURIComponent(aviso)}`,
+        { mode: "no-cors" }
+      )
+    );
+  }
+
+  const resultados = await Promise.allSettled(envios);
+  if (resultados.some((r) => r.status === "fulfilled")) {
     form.reset();
     btn.textContent = "¡Listo! Te contactamos pronto 🐾";
-  } catch {
+  } else {
     btn.textContent = "No se pudo enviar, escríbenos por WhatsApp";
   }
   setTimeout(() => {
     btn.textContent = original;
-    form.querySelector("button").disabled = false;
+    button.disabled = false;
   }, 5000);
 });
 
