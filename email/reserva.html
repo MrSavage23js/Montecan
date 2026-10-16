@@ -1,0 +1,82 @@
+<!--
+  Plantilla del correo de "Nueva reserva" para EmailJS.
+  Pegar en EmailJS → Email Templates → Content → "Edit content" → modo código (<>).
+  Variables: {{telefono_wa}} {{nombre}} {{telefono}} {{telefono2}} {{perro}} {{servicio}} {{notas}}
+-->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nueva reserva · Montecan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#F6EFDF;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F6EFDF;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:18px;overflow:hidden;font-family:Raleway,Helvetica,Arial,sans-serif;color:#3A2C23;">
+
+          <!-- Encabezado -->
+          <tr>
+            <td style="background:#67132B;padding:32px 32px 28px;text-align:center;">
+              <p style="margin:0 0 6px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#FCCBC1;">Montecan · Hike &amp; Hound</p>
+              <h1 style="margin:0;font-family:Caveat,'Brush Script MT',cursive;font-size:40px;line-height:1.1;font-weight:700;color:#F6EFDF;">¡Nueva reserva! 🐾</h1>
+            </td>
+          </tr>
+
+          <!-- Servicio -->
+          <tr>
+            <td style="padding:28px 32px 8px;text-align:center;">
+              <span style="display:inline-block;background:#FCCBC1;color:#67132B;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;border-radius:999px;">{{servicio}}</span>
+            </td>
+          </tr>
+
+          <!-- Datos -->
+          <tr>
+            <td style="padding:16px 32px 8px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:16px;">
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;color:#67132B;font-size:11px;letter-spacing:.2em;text-transform:uppercase;width:130px;">Nombre</td>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;font-weight:600;">{{nombre}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;color:#67132B;font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Teléfono</td>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;font-weight:600;"><a href="tel:{{telefono}}" style="color:#3A2C23;text-decoration:none;">{{telefono}}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;color:#67132B;font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Otro teléfono</td>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;">{{telefono2}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;color:#67132B;font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Perro</td>
+                  <td style="padding:12px 0;border-bottom:1px solid #EFE5CF;">{{perro}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 0;color:#67132B;font-size:11px;letter-spacing:.2em;text-transform:uppercase;vertical-align:top;">Notas</td>
+                  <td style="padding:12px 0;line-height:1.5;">{{notas}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Botón WhatsApp -->
+          <tr>
+            <td style="padding:20px 32px 32px;text-align:center;">
+              <a href="https://wa.me/{{telefono_wa}}" style="display:inline-block;background:#67132B;color:#F6EFDF;font-weight:600;font-size:15px;text-decoration:none;padding:14px 28px;border-radius:999px;">Escribirle por WhatsApp</a>
+            </td>
+          </tr>
+
+          <!-- Pie -->
+          <tr>
+            <td style="background:#3A2C23;padding:18px 32px;text-align:center;font-size:12px;color:#F6EFDF;opacity:.9;">
+              Reserva enviada desde el formulario de montecan · <a href="https://www.instagram.com/montecanmx" style="color:#FCCBC1;text-decoration:none;">@montecanmx</a>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

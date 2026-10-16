@@ -8,6 +8,8 @@ const WHATSAPP = "525559028396";
 const CALLMEBOT_KEY = "";
 // Correo que recibe las reservas vía FormSubmit (vacío = desactivado)
 const RESERVAS_EMAIL = "montecanhh@gmail.com";
+// EmailJS: correo con diseño de Montecan (plantilla en email/reserva.html). Si está completo, reemplaza a FormSubmit
+const EMAILJS = { service: "", template: "", publicKey: "" };
 
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -61,7 +63,31 @@ Notas: ${f.get("mensaje")}` : "");
   btn.textContent = "Enviando…";
 
   const envios = [];
-  if (RESERVAS_EMAIL) {
+  if (EMAILJS.service && EMAILJS.template && EMAILJS.publicKey) {
+    const digitos = f.get("telefono").replace(/\D/g, "");
+    envios.push(
+      fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: EMAILJS.service,
+          template_id: EMAILJS.template,
+          user_id: EMAILJS.publicKey,
+          template_params: {
+            nombre: f.get("nombre"),
+            telefono: f.get("telefono"),
+            telefono2: f.get("telefono2") || "—",
+            telefono_wa: digitos.length === 10 ? `52${digitos}` : digitos,
+            perro: f.get("perro"),
+            servicio: f.get("servicio"),
+            notas: f.get("mensaje") || "—",
+          },
+        }),
+      }).then((r) => {
+        if (!r.ok) throw new Error(r.status);
+      })
+    );
+  } else if (RESERVAS_EMAIL) {
     envios.push(
       fetch(`https://formsubmit.co/ajax/${RESERVAS_EMAIL}`, {
         method: "POST",
