@@ -267,16 +267,6 @@ $$(".g[data-speed]").forEach((g) =>
   })
 );
 
-/* ---------- Merch ---------- */
-gsap.fromTo(".merch__bigword", { xPercent: -42 }, {
-  xPercent: -58, ease: "none",
-  scrollTrigger: { trigger: ".merch", start: "top bottom", end: "bottom top", scrub: true },
-});
-gsap.from(".product", {
-  y: 80, opacity: 0, stagger: 0.12, duration: 1.3, ease: "expo.out",
-  scrollTrigger: { trigger: ".merch__grid", start: "top 85%" },
-});
-
 /* ---------- FAQ: abrir/cerrar animado ---------- */
 $$(".faq__item").forEach((d) => {
   const summary = $("summary", d);

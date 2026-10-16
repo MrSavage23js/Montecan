@@ -282,8 +282,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .day-card figure { aspect-ratio: 3 / 4; overflow: hidden; border-radius: var(--radius); margin-bottom: 22px; }
 .day-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .day-card:hover img { transform: scale(1.06); }
-.day-card__time { font-family: var(--f-hand); font-size: 34px; color: var(--blush); }
-.day-card h3 { font-size: 24px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; margin: 2px 0 8px; }
+.day-card h3 { font-size: 24px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 8px; }
 .day-card p { color: rgba(246, 239, 223, .74); font-size: 15px; max-width: 34ch; }
 
 /* ---------- Promesa ---------- */
@@ -304,25 +303,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .g--tall { aspect-ratio: 3 / 5; }
 .g img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter .6s; filter: saturate(.92); }
 .g:hover img { transform: scale(1.07); filter: saturate(1.05); }
-
-/* ---------- Merch ---------- */
-.merch { background: var(--cocoa); color: var(--cream); padding: clamp(100px, 14vw, 180px) 0; position: relative; overflow: hidden; }
-.merch__bigword {
-  position: absolute; left: 50%; top: 40px; width: 140%; transform: translateX(-50%);
-  color: transparent; opacity: .08; pointer-events: none;
-}
-.merch__bigword svg { width: 100%; height: auto; }
-.merch__bigword path { fill: none; stroke: var(--blush); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
-.merch .container { position: relative; }
-.merch__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 32px); }
-.product__img { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius); overflow: hidden; background: var(--cream-2); }
-.product__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), opacity .7s var(--ease), clip-path .9s var(--ease); }
-.product__alt { clip-path: inset(0 0 100% 0); }
-.product:hover .product__alt { clip-path: inset(0 0 0 0); }
-.product:hover .product__img img:first-child { transform: scale(1.06); }
-.product__info { display: flex; justify-content: space-between; align-items: baseline; padding: 18px 4px 0; gap: 12px; }
-.product__info h3 { font-size: 22px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
-.product__info span { font-size: 13px; color: rgba(246, 239, 223, .6); letter-spacing: .06em; }
 
 /* ---------- FAQ ---------- */
 .faq { padding: clamp(100px, 14vw, 180px) 0; }
@@ -431,8 +411,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .gallery__grid .g:nth-child(5) { display: none; }
   .g--tall { aspect-ratio: 3 / 4; }
 
-  .merch__grid { grid-template-columns: 1fr; }
-  .product__img { aspect-ratio: 4 / 3; }
   .wa-float { width: 50px; height: 50px; right: 14px; bottom: 14px; }
   .wa-float svg { width: 24px; height: 24px; }
   .hero__content { padding-bottom: 90px; }
